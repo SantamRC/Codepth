@@ -1,0 +1,16 @@
+.name-abt{
+    position: absolute;
+    top:20%
+
+}
+.des{
+    position: absolute;
+    top:30%;
+    height:30%;
+
+}
+
+.sub{
+    position: absolute;
+    top:70%;
+}

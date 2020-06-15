@@ -31,6 +31,7 @@ app.post('/signup',async(req,res)=>{
 
     const User=new user({
         name: req.body.name,
+        mail:req.body.mail,
         password: hashpassword
     })
     try{
@@ -42,8 +43,8 @@ app.post('/signup',async(req,res)=>{
 })
 //Login using JWT
 app.post('/login',(req,res)=>{
-   user.findOne({name:req.body.name}).then(User=>{
-       if(!User) return res.status(404).send('Name not found')
+   user.findOne({name:req.body.mail}).then(User=>{
+       if(!User) return res.status(404).send('Email not found')
        bcrypt.compare(req.body.password,User.password).then(isMatch=>{
            if(isMatch){
             const token=jwt.sign({_id:User._id},'token',{expiresIn:120})

@@ -5,6 +5,7 @@ import LOG from './login'
 import DASH from './dashboard'
 import CONTACT from './contact'
 import ABOUT from './about'
+import SIGN from './signup'
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
       <Router>
         <NAV />
         <Route path='/login' exact component={LOG}></Route>
+        <Route path='/signup' exact component={SIGN}></Route>
         <Route path='/dashboard' exact component={DASH}></Route>
         <Route path='/contactus' exact component={CONTACT}></Route>
         <Route path='/about' exact component={ABOUT}></Route>

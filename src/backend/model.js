@@ -3,6 +3,7 @@ const schema=mongoose.Schema;
 
 const user=new schema({
     name:String,
+    mail:String,
     password:String
 })
 

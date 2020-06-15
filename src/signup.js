@@ -3,25 +3,35 @@ import './CSS/login.css'
 import {Link} from 'react-router-dom'
 import axios from 'axios'
 
-export default class LOG extends Component{
+export default class SIGN extends Component{
     constructor(props){
         super(props)
         this.state={
+            name:'',
             mail:'',
             password:''
         }
         this.onSubmit=this.onSubmit.bind(this)
+        this.onChangeName=this.onChangeName.bind(this)
         this.onChangeMail=this.onChangeMail.bind(this)
         this.onChangePassword=this.onChangePassword.bind(this)
+        
     }
+    
     onSubmit(e){
         e.preventDefault()
         const data={
+            name:this.name,
             mail:this.mail,
             password:this.password
         }
-        axios.post('localhost:4000/login',data).then(res=>{
+        axios.post('localhost:4000/signup',data).then(res=>{
             console.log(res)
+        })
+    }
+    onChangeName(e){
+        this.setState({
+            name:e.target.value
         })
     }
     onChangeMail(e){
@@ -34,8 +44,8 @@ export default class LOG extends Component{
             password:e.target.value
         })
     }
-    render(){
-        return(
+     render(){ 
+         return(
             <div>
                 <div className='square'>
                     <div className='blue'>
@@ -47,9 +57,15 @@ export default class LOG extends Component{
                     <div className='login'><Link to='/login'><b>LOGIN</b></Link></div>
                     <div className='sign-box'>
                         <form onSubmit={this.onSubmit}>
-                            <input id='mail' 
+                            <input id='name' 
                                 type='text' 
-                                placeholder='E-MAIL'
+                                placeholder='NAME' 
+                                value={this.state.name}
+                                onChange={this.onChangeName}
+                            />
+                            <input id='mail' 
+                                type='text'
+                                placeholder='E-MAIL' 
                                 value={this.state.mail}
                                 onChange={this.onChangeMail}
                              />
@@ -63,8 +79,10 @@ export default class LOG extends Component{
                         </form>
                         <div className='lock'></div>
                         <div className='mail'></div>
+                        <div className='name'></div>
                     </div>
                 </div>
             </div>
-    )}
+        )
+     }
 }
