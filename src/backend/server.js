@@ -3,6 +3,8 @@ const app=express()
 const mongoose=require('mongoose')
 const user=require('./model')
 const bcrypt=require('bcryptjs')
+const nodemailer=require('nodemailer')
+const about=require('./abt')
 const jwt=require('jsonwebtoken')
 require('dotenv').config()
 const port=4000;
@@ -38,29 +40,32 @@ app.post('/signup',async(req,res)=>{
     }
 })
 
-app.post('/login',async(req,res)=>{
-   const emailExist=await user.findOne({name:req.body.name})
-   if(!emailExist) return res.status(400).send('Email not found')
-   const validPass=await bcrypt.compare(req.body.password,user.password,(err,resp)=>{
-       if(resp){
-           return res.send('logged in')
-       }else{
-           return res.send('password invalid')
-       }
+app.post('/login',(req,res)=>{
+   user.findOne({name:req.body.name}).then(User=>{
+       if(!User) return res.status(404).send('Name not found')
+       bcrypt.compare(req.body.password,User.password).then(isMatch=>{
+           if(isMatch){
+            const token=jwt.sign({_id:User._id},'token',{expiresIn:120})
+            res.header('auth-token',token).send(token)
+           }else{
+               return res.status(400).send('Password incorrect')
+           }
+       })
    })
-   const token=jwt.sign({_id:user._id},'token')
-   res.header('auth-token',token).send(token)
-   
 })
 
 app.get('/dashboard',verifyToken,(req,res)=>{
     jwt.verify(req.token,'key',(err,authData)=>{
         if(err){
-            res.sendStatu(403)
+            res.sendStatus(403)
         }else{
             res.send('dashboard accessible')
         }
     })   
+})
+
+app.post('/contactus',(req,res)=>{
+
 })
 
 function verifyToken(req,res,next){
