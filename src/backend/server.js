@@ -11,7 +11,7 @@ const port=4000;
 
 app.use(express.json()
 )
-mongoose.connect('mongodb+srv://santam:santam12345@cluster-q6ixt.mongodb.net/codepth?retryWrites=true&w=majority', 
+mongoose.connect(process.env.DB_CONNECT, 
     { useNewUrlParser: true,useUnifiedTopology: true}
 )
 
