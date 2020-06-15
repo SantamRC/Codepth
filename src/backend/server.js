@@ -8,9 +8,10 @@ const about=require('./abt')
 const jwt=require('jsonwebtoken')
 require('dotenv').config()
 const port=4000;
-
+//Middleware
 app.use(express.json()
 )
+//Connecting to DB
 mongoose.connect(process.env.DB_CONNECT, 
     { useNewUrlParser: true,useUnifiedTopology: true}
 )
@@ -39,7 +40,7 @@ app.post('/signup',async(req,res)=>{
         res.status(400).send(err)
     }
 })
-
+//Login using JWT
 app.post('/login',(req,res)=>{
    user.findOne({name:req.body.name}).then(User=>{
        if(!User) return res.status(404).send('Name not found')
@@ -53,7 +54,7 @@ app.post('/login',(req,res)=>{
        })
    })
 })
-
+//Protected route 
 app.get('/dashboard',verifyToken,(req,res)=>{
     jwt.verify(req.token,'key',(err,authData)=>{
         if(err){
